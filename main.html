@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CS-416    Narrative Visualization</title>
+    <!-- Load D3.js -->
+    <script src="node_modules/d3/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/d3-svg-annotation@latest"></script>
+    <!-- Load custom JavaScript file -->
+    <script type="module" src="legoNarrative.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="lego-name">
+            <div id="logo-header"></div>
+            <div>
+                <h1>Lego Narrative Visualization</h1>
+                <button id="btn1">Slide 1</button>
+                <button id="btn2">Slide 2</button>
+                <button id="btn3">Slide 3</button>
+            </div>
+        </div>
+
+
+    </header>
+    <div class="grid-container">
+
+        <div class="graph-column">
+            <!-- Div for Graph 1 -->
+            <div class="graph-container" id="graph1-text">
+                <div class="left-text" >
+                    <div class="title">
+                        <div class="lego-head"></div>
+                        <h2>Lego Set Releases Over the Years</h2>
+                    </div>
+                    <p >Over the years, <span style="color: #DA291C; font-weight: bold;">Lego</span> has
+                        grown a lot, both in the number of sets and their variety. In the first 10 years, starting from
+                        1945, Lego released an average of 100 sets. By 2020, this number had grown to over 200 sets.
+                        Since 1990, the steady increase in set releases shows how Lego continues to evolve and captivate
+                        new and old generations.
+                        <span style="color: blue; font-weight: bold;">Explore</span> <span
+                            style="color: black; font-weight: bold;">each decade to learn more about the evolution of
+                            Lego.
+                    </p>
+                </div>
+                <div id="graph1"></div>
+            </div>
+            <!-- Div for Graph 2 -->
+            <div class="graph-container" id="graph2-text">
+                <div class="left-text" >
+                    <div class="title">
+                        <div class="lego-head"></div>
+                        <h2>Lego Themes with the Most Set Releases</h2>
+                    </div>
+                    <p id="graph2-desc">This graph highlights the <span style="color: #DA291C; font-weight: bold;">top 10 Lego themes </span> with the highest
+                        number of set releases. A curious fact: more than half of the 300+ themes currently available
+                        were introduced in the last 20 years.</p>
+                </div>
+                <div id="graph2"></div>
+            </div>
+            <!-- Div for Graph 3 -->
+            <div class="graph-container" id="graph3-text">
+                <div class="left-text" >
+                    <div class="title">
+                        <div class="lego-head"></div>
+                        <h2>Lego's Largest and Most Complex Sets</h2>
+                    </div>
+                    <p id="graph3-desc">This graph shows how Lego has not only increased the number of themes released
+                        over time but also made sets bigger and more challenging. <span style="color: #DA291C; font-weight: bold;">The World Map set, with over 11,000
+                        pieces</span>, is the largest set currently available. The Eiffel Tower set, with more than 10,000
+                        pieces, is both one of the largest and the tallest Lego sets, measuring 58.5 inches. Both of
+                        these sets were released in the last five years. This demonstrates that as Lego's popularity has
+                        grown, so has the complexity of its sets.</p>
+                </div>
+                <div id="graph3"></div>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div id="lego-footer"></div>
+</body>
+
+</html>

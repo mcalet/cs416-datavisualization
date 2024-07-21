@@ -1,0 +1,68 @@
+body{
+    margin: 10px;
+    font-family: Arial, sans-serif;
+}
+header{
+    
+    color: white;
+    text-align: left;
+    padding: 5px;
+}
+
+.lego-name{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color:  #FFD700;
+    border: 2px solid #000000;
+    color: #000000;  
+}
+
+#logo-header{
+    padding-top: 10px;
+}
+
+
+.graph-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+}
+#graph1, #graph2, #graph3{
+
+    justify-content: center;
+}
+.title{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+p{
+    margin: 10px;
+}
+button{
+    background-color: #DA291C;
+    border: 2px solid #000000;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: -8px 10px 10px 0px;
+}
+
+ 
+  .bar{
+      fill:#006cb7;
+  }
+  .x.axis path{
+      display:none;
+  }
+  .axis text {
+    font-weight: bold;
+    font-size: 12px;
+}
