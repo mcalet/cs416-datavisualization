@@ -5,6 +5,7 @@ var margin = { top: 20, right: 200, bottom: 50, left: 55 },
 var formatPercent = d3.format(".0%");
 var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
 
+
 function hideAllGraphs() {
   document.getElementById("graph1").style.display = "none";
   document.getElementById("graph2").style.display = "none";
