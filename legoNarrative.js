@@ -5,7 +5,6 @@ var margin = { top: 20, right: 200, bottom: 50, left: 55 },
 var formatPercent = d3.format(".0%");
 var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
 
-
 function hideAllGraphs() {
   document.getElementById("graph1").style.display = "none";
   document.getElementById("graph2").style.display = "none";
@@ -151,7 +150,9 @@ function createGraph1() {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Average Number of Sets");
+        .text("Average Number of Sets Released");
+
+      const tooltip = d3.select("body").append("div").attr("class", "tooltip");
 
       svg
         .selectAll(".bar")
@@ -163,7 +164,22 @@ function createGraph1() {
         .attr("width", x.bandwidth())
         .attr("y", (d) => y(d.average))
         .attr("height", (d) => height - y(d.average))
-        //Annotation
+        .on("mouseover", function (event, d) {
+          tooltip.transition().duration(200).style("opacity", 0.9);
+
+          let tooltipContent = `Sets Released by year:<br>`;
+          d.years.forEach((year) => {
+            tooltipContent += `${year.year}: ${year.releases}<br>`;
+          });
+
+          tooltip
+            .html(tooltipContent)
+            .style("left", event.pageX + 5 + "px")
+            .style("top", event.pageY - 28 + "px");
+        })
+        .on("mouseout", function (d) {
+          tooltip.transition().duration(500).style("opacity", 0);
+        })
         .each(function (d) {
           const roundedValue = Math.round(d.average);
           svg
@@ -224,6 +240,11 @@ function createGraph2() {
         )
       );
 
+      let dataByTheme = d3.group(data, (d) => d.theme_name);
+      dataByTheme.forEach((value, key) => {
+        value.sort((a, b) => b.year_released - a.year_released);
+      });
+
       let countsByThemeArray = Array.from(
         filteredCountsByTheme,
         ([theme_name, count]) => ({ theme_name, count })
@@ -253,6 +274,14 @@ function createGraph2() {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
+      //tooltip
+
+      const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
       svg
         .selectAll(".bar")
         .data(countsByThemeArray)
@@ -262,7 +291,23 @@ function createGraph2() {
         .attr("y", (d) => y(d.theme_name))
         .attr("height", y.bandwidth())
         .attr("x", 0)
-        .attr("width", (d) => x(d.count));
+        .attr("width", (d) => x(d.count))
+        .on("mouseover", function (event, d) {
+          tooltip.transition().duration(200).style("opacity", 0.9);
+          let recentSets = dataByTheme.get(d.theme_name).slice(0, 10);
+          let tooltipContent = `Most Recent Sets:<br>`;
+          recentSets.forEach((set) => {
+            tooltipContent += `${set.year_released}: ${set.set_name}<br>`;
+          });
+
+          tooltip
+            .html(tooltipContent)
+            .style("left", event.pageX + 5 + "px")
+            .style("top", event.pageY - 28 + "px");
+        })
+        .on("mouseout", function (d) {
+          tooltip.transition().duration(500).style("opacity", 0);
+        });
 
       svg
         .selectAll(".bar-annotation")
@@ -337,6 +382,12 @@ function createGraph3() {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).ticks(5));
+      //tooltip
+      const tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
       svg
         .selectAll(".bar")
@@ -347,7 +398,23 @@ function createGraph3() {
         .attr("y", (d) => y(d.set_name))
         .attr("height", y.bandwidth())
         .attr("x", 0)
-        .attr("width", (d) => x(d.number_of_parts));
+        .attr("width", (d) => x(d.number_of_parts))
+        .on("mouseover", function (event, d) {
+          tooltip.transition().duration(200).style("opacity", 0.9);
+
+          let tooltipContent = `Set Name: ${d.set_name}<br>
+            Year Released: ${d.year_released}<br>
+            Theme: ${d.theme_name}<br>
+            Number of Parts: ${d.number_of_parts}`;
+
+          tooltip
+            .html(tooltipContent)
+            .style("left", event.pageX + 5 + "px")
+            .style("top", event.pageY - 28 + "px");
+        })
+        .on("mouseout", function (d) {
+          tooltip.transition().duration(500).style("opacity", 0);
+        });
 
       svg
         .selectAll(".bar-annotation")
@@ -397,14 +464,24 @@ function groupAndFilterData(data) {
 
   let averagesByFiveYearInterval = Array.from(
     filteredDataByFiveYearInterval,
-    ([interval, sets]) => ({
-      interval: interval,
-      average: sets.length
-        ? sets.reduce((acc, curr) => acc + curr.number_of_parts, 0) /
-          sets.length
-        : 0,
-    })
+    ([interval, sets]) => {
+      let setsByYear = d3.group(sets, (d) => d.year_released);
+      let years = Array.from(setsByYear, ([year, sets]) => ({
+        year: year,
+        releases: sets.length,
+      }));
+
+      return {
+        interval: interval,
+        average: sets.length
+          ? sets.reduce((acc, curr) => acc + curr.number_of_parts, 0) /
+            sets.length
+          : 0,
+        years: years,
+      };
+    }
   );
+
   return averagesByFiveYearInterval;
 }
 
